@@ -1,0 +1,20 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+:host {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+app-header, app-footer {
+    flex-shrink: 0;
+}
+
+app-main {
+    flex-grow: 1;
+    margin-top: 70px;
+    margin-bottom: 250px;
+}

@@ -8,5 +8,14 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  mostrarLogin: boolean = false;
+
+
+  showLogin(){
+    this.mostrarLogin = true;
+  }
+  cancelLogin(){
+    this.mostrarLogin = false;
+  }
 
 }

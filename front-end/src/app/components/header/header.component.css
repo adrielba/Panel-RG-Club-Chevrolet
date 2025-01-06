@@ -9,3 +9,27 @@ img{
     margin-left: 30px;
     width: 74px;
 }
+
+.login-button{
+    position: absolute;
+    top: 30px;
+    right: 20px;
+}
+.btn-ingresar{
+    color: white;
+    background-color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 15px;
+}
+
+.btn-ingresar:hover{
+    box-shadow: 0 0 10px #ffff;
+}
+.login-block{
+    position: absolute;
+    top: 15px;
+    right: 20px;
+}
