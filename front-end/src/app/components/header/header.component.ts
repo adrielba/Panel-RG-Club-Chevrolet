@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,6 +10,10 @@ import { Component } from '@angular/core';
 })
 export class HeaderComponent {
   mostrarLogin: boolean = false;
+  isLoggedIn: boolean = false;
+  usuario: string = '';
+
+  constructor(private auth: AuthService) {}
 
 
   showLogin(){
@@ -16,6 +21,22 @@ export class HeaderComponent {
   }
   cancelLogin(){
     this.mostrarLogin = false;
+  }
+
+  onLoginSuccess(usuario: string) {
+    this.isLoggedIn = true;
+    this.usuario = usuario;
+    this.mostrarLogin = false;
+  }
+
+  onLoginError(error: string) {
+    alert(error);
+  }
+
+  logout() {
+    this.auth.logout();
+    this.isLoggedIn = false;
+    this.usuario = '';
   }
 
 }

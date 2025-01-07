@@ -1,4 +1,4 @@
-.login-container{
+.login-container form{ 
     display: flex;
     background-color: rgba(192, 192, 192, 0);
     padding: 20px;
@@ -17,4 +17,9 @@
 .login-container button:hover{
     cursor: pointer;
     box-shadow: 0 0 10px #ffff;
+}
+.error-message {
+    color: red;
+    margin-top: 10px;
+    font-size: 14px;
 }

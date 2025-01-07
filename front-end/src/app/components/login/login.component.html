@@ -1,6 +1,9 @@
 <div class="login-container">
-    <input type="text" placeholder="Usuario" name="csuario" id="usuario">
-    <input type="password" placeholder="Contraseña" name="contraseña" id="contraseña">
-    <button>Entrar</button>
-    <button (click)="exitLogin()">Cancelar</button>
+    <form (ngSubmit)="onLogin()">
+        <input type="text" placeholder="Usuario" [(ngModel)]="usuario" name="usuario" id="usuario" required>
+        <input type="password" placeholder="Contraseña" [(ngModel)]="contrasena" name="contraseña" id="contraseña" required>
+        <button type="submit">Entrar</button>
+        <button type="button" (click)="exitLogin()">Cancelar</button>
+    </form>
+    <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
 </div>

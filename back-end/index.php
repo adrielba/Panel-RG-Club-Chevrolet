@@ -28,9 +28,62 @@ $conn = new mysqli($env['DB_HOST'], $env['DB_USER'], $env['DB_PASS'], $env['DB_N
 
 if($conn->connect_error){
 	die(json_encode(["error" => "Conexión a la Base de Datos Fallida: ", $conn->connect_error]));
+	exit();
 }
 
-echo json_encode(["message" => "Conexión a la Base de Datos Exitosa"]);
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+	$action = $_GET['action'] ?? '';
 
+	if($action === 'login'){
+		handleLogin($conn);
+	} else {
+		echo json_encode(["error" => "Acción Invalida"]);
+	}
+
+}
+
+function handleLogin($conn) {
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if (!isset($data['usuario']) || !isset($data['contraseña'])) {
+        http_response_code(400);
+        echo json_encode(["error" => "Falta Usuario o Contraseña"]);
+        exit();
+    }
+
+    $usuario = $data['usuario'];
+    $contraseña = $data['contraseña'];
+
+    $stmt = $conn->prepare("SELECT contraseña FROM chivousers WHERE usuario = ?");
+    if (!$stmt) {
+        http_response_code(500);
+        echo json_encode(["error" => "No se pudo preparar la declaración"]);
+        exit();
+    }
+
+    $stmt->bind_param("s", $usuario);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        http_response_code(401);
+        echo json_encode(["error" => "Usuario o Contraseña Invalidos"]);
+        $stmt->close();
+        exit();
+    }
+
+    $row = $result->fetch_assoc();
+    $hashedPassword = $row['contraseña'];
+
+    if (password_verify($contraseña, $hashedPassword)) {
+        echo json_encode(["message" => "Ingreso Exitoso"]);
+    } else {
+        http_response_code(401);
+        echo json_encode(["error" => "Usuario o Contraseña Invalidos"]);
+    }
+
+    $stmt->close();
+    exit();
+}
 
 ?>

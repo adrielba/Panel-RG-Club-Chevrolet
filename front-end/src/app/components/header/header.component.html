@@ -1,9 +1,13 @@
 <header class="header">
     <img src="/images/logo.png" alt="logo1">
-    <div class="login-button" *ngIf="!mostrarLogin">
+    <div class="login-button" *ngIf="!mostrarLogin && !isLoggedIn">
         <button type="submit" class="btn-ingresar" (click)="showLogin()">Ingresar</button>
     </div>
-    <div class="login-block" *ngIf="mostrarLogin">
-        <app-login></app-login>
+    <div class="login-block" *ngIf="mostrarLogin && !isLoggedIn">
+        <app-login (loginSuccess)="onLoginSuccess($event)" (loginError)="onLoginError($event)"></app-login>
+    </div>
+    <div class="welcome-block" *ngIf="isLoggedIn">
+        <p>Bienvenido, {{ usuario }}</p>
+        <button (click)="logout()">Salir</button>
     </div>
 </header>
