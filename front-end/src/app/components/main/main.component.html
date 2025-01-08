@@ -11,8 +11,21 @@
         <h1>Ver Ganador</h1>
 
         <label for="numero">Número:</label>
-        <input type="number" id="numero"/>
-        <button type="button">Ver</button>
+        <input type="number" id="numero" [(ngModel)]="numero"/>
+        <button type="button" (click)="verGanador()">Ver</button>
+
+        <div *ngIf="ganador" class="overlay">
+            <h2>¡Ganador Encontrado!</h2>
+            <p><strong>Números:</strong> {{ ganador.numeros }}</p>
+            <p><strong>Nombre:</strong> {{ ganador.nombre }}</p>
+            <p><strong>Domicilio:</strong> {{ ganador.domicilio }}</p>
+            <p><strong>DNI:</strong> {{ ganador.dni }}</p>
+            <p><strong>Teléfono:</strong> {{ ganador.fono }}</p>
+            <p><strong>Vendedor:</strong> {{ ganador.apellido }}</p>
+            <button (click)="cerrarOverlay()">Cerrar</button>
+        </div>
+    
+        <p *ngIf="error" class="error-message">{{ error }}</p>
     </div>
 </div>
 <div class="overlay-cargar">

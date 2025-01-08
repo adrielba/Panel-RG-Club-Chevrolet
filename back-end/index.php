@@ -31,14 +31,17 @@ if($conn->connect_error){
 	exit();
 }
 
+
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
 	$action = $_GET['action'] ?? '';
 
 	if($action === 'login'){
 		handleLogin($conn);
-	} else {
-		echo json_encode(["error" => "Acción Invalida"]);
-	}
+	}elseif ($action === 'verGanador') {
+        handleVerGanador($conn);
+    } else {
+        echo json_encode(["error" => "Acción Invalida"]);
+    }
 
 }
 
@@ -82,6 +85,55 @@ function handleLogin($conn) {
         echo json_encode(["error" => "Usuario o Contraseña Invalidos"]);
     }
 
+    $stmt->close();
+    exit();
+}
+
+function handleVerGanador($conn) {
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if (!isset($data['numero'])) {
+        http_response_code(400);
+        echo json_encode(["error" => "Número no proporcionado"]);
+        exit();
+    }
+
+    $numero = $data['numero'];
+
+    $stmt = $conn->prepare(
+        "SELECT n1, n2, n3, n4, nombre, domicilio, dni, fono, apellido
+         FROM numeros 
+         LEFT JOIN vende ON numeros.vende = vende.vende 
+         WHERE n1 = ? OR n2 = ? OR n3 = ? OR n4 = ?"
+    );
+
+    if (!$stmt) {
+        http_response_code(500);
+        echo json_encode(["error" => "No se pudo preparar la declaración"]);
+        exit();
+    }
+
+    $stmt->bind_param("iiii", $numero, $numero, $numero, $numero);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        http_response_code(404);
+        echo json_encode(["error" => "Bono no Vendido"]);
+        exit();
+    }
+
+    $row = $result->fetch_assoc();
+    $response = [
+        "numeros" => implode(" * ", [$row['n1'], $row['n2'], $row['n3'], $row['n4']]),
+        "nombre" => $row['nombre'],
+        "domicilio" => $row['domicilio'],
+        "dni" => $row['dni'],
+        "fono" => $row['fono'],
+        "apellido" => $row['apellido']
+    ];
+
+    echo json_encode($response);
     $stmt->close();
     exit();
 }
