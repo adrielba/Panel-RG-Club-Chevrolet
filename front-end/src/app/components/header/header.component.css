@@ -33,3 +33,20 @@ img{
     top: 15px;
     right: 20px;
 }
+.welcome-block{
+    position: absolute;
+    top: 0px;
+    right: 50px;
+}
+.welcome-block button{
+    color: white;
+    background-color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 15px;
+}
+.welcome-block button:hover{
+    box-shadow: 0 0 10px #ffff;
+}

@@ -3,8 +3,32 @@
         <h1>Cargar Bono</h1>
 
         <label for="numero">Número:</label>
-        <input type="number" id="numero"/>
-        <button type="button">Cargar</button>
+        <input type="number" id="numero"  [(ngModel)]="number" min="0" max="2499"/>
+        <button (click)="verificarNumero()">Cargar</button>
+
+        <div *ngIf="mostrarOverlay" class="overlay1">
+            <h2>Cargar Datos del Bono</h2>
+            <p>Números del Bono: {{ bono.numeros }}</p>
+            <p>Vendedor: {{ bono.apellido }}</p>
+
+            <form (ngSubmit)="cargarBono()">
+                <label>Nombre:</label>
+                <input type="text" [(ngModel)]="bono.nombre" name="nombre" required />
+
+                <label>Domicilio:</label>
+                <input type="text" [(ngModel)]="bono.domicilio" name="domicilio" required />
+
+                <label>DNI:</label>
+                <input type="text" [(ngModel)]="bono.dni" name="dni" required />
+
+                <label>Teléfono:</label>
+                <input type="text" [(ngModel)]="bono.fono" name="fono" required />
+
+                <button type="submit">Enviar</button>
+                <button type="button" (click)="exitOverlay()" >Cancelar</button>
+            </form>
+        </div>
+        <p *ngIf="error1" class="error-message">{{ error1 }}</p>
     </div>
 
     <div class="ver-ganador-container">

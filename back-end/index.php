@@ -32,17 +32,20 @@ if($conn->connect_error){
 }
 
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-	$action = $_GET['action'] ?? '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = $_GET['action'] ?? '';
 
-	if($action === 'login'){
-		handleLogin($conn);
-	}elseif ($action === 'verGanador') {
+    if ($action === 'login') {
+        handleLogin($conn);
+    } elseif ($action === 'verGanador') {
         handleVerGanador($conn);
+    } elseif ($action === 'verificarNumero') {
+        handleVerificarNumero($conn);
+    } elseif ($action === 'cargarBono') {
+        handleCargarBono($conn);
     } else {
-        echo json_encode(["error" => "Acción Invalida"]);
+        echo json_encode(["error" => "Acción inválida"]);
     }
-
 }
 
 function handleLogin($conn) {
@@ -136,6 +139,113 @@ function handleVerGanador($conn) {
     echo json_encode($response);
     $stmt->close();
     exit();
+}
+
+function handleVerificarNumero($conn) {
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if (!isset($data['number'])) {
+        http_response_code(400);
+        echo json_encode(["error" => "Número no proporcionado"]);
+        exit();
+    }
+
+    $numero = $data['number'];
+
+    $stmt = $conn->prepare(
+        "SELECT n1, n2, n3, n4, vende, nombre, domicilio, dni, fono
+         FROM numeros 
+         WHERE n1 = ? OR n2 = ? OR n3 = ? OR n4 = ?"
+    );
+
+    if (!$stmt) {
+        http_response_code(500);
+        echo json_encode(["error" => "Error en la base de datos"]);
+        exit();
+    }
+
+    $stmt->bind_param("iiii", $numero, $numero, $numero, $numero);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        http_response_code(404);
+        echo json_encode(["error" => "Número no encontrado"]);
+        exit();
+    }
+
+    $row = $result->fetch_assoc();
+
+    
+    if (!empty($row['nombre']) || !empty($row['domicilio']) || !empty($row['dni'])) {
+        http_response_code(400);
+        echo json_encode(["error" => "Bono ya vendido"]);
+        exit();
+    }
+
+    $vendeStmt = $conn->prepare("SELECT apellido FROM vende WHERE vende = ?");
+    $vendeStmt->bind_param("i", $row['vende']);
+    $vendeStmt->execute();
+    $vendeResult = $vendeStmt->get_result();
+    $vendeRow = $vendeResult->fetch_assoc();
+
+    $response = [
+        "numeros" => implode(" * ", [$row['n1'], $row['n2'], $row['n3'], $row['n4']]),
+        "apellido" => $vendeRow['apellido'],
+        "vende" => $row['vende']
+    ];
+
+    echo json_encode($response);
+    $stmt->close();
+    $vendeStmt->close();
+}
+
+function handleCargarBono($conn) {
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if (!isset($data['nombre'], $data['domicilio'], $data['dni'], $data['fono'], $data['number'], $data['vende'])) {
+        http_response_code(400);
+        echo json_encode(["error" => "Faltan datos"]);
+        return;
+    }
+
+    $stmt = $conn->prepare(
+        "UPDATE numeros 
+        SET nombre = IF(TRIM(nombre) = '' OR nombre IS NULL, ?, nombre), 
+        domicilio = IF(TRIM(domicilio) = '' OR domicilio IS NULL, ?, domicilio), 
+        dni = IF(TRIM(dni) = '' OR dni IS NULL, ?, dni), 
+        fono = IF(TRIM(fono) = '' OR fono IS NULL, ?, fono) 
+        WHERE (n1 = ? OR n2 = ? OR n3 = ? OR n4 = ?) 
+        AND vende = ?"
+    );
+
+    if (!$stmt) {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al preparar la consulta"]);
+        return;
+    }
+
+    $stmt->bind_param(
+        "sssssiiii",
+        $data['nombre'], 
+        $data['domicilio'], 
+        $data['dni'], 
+        $data['fono'], 
+        $data['number'], 
+        $data['number'],
+        $data['number'],
+        $data['number'],
+        $data['vende']
+    );
+
+    if ($stmt->execute()) {
+        echo json_encode(["message" => "Bono cargado exitosamente"]);
+    } else {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al actualizar el bono"]);
+    }
+
+    $stmt->close();
 }
 
 ?>
