@@ -10,4 +10,14 @@
         <p>Bienvenido, {{ usuario }}</p>
         <button (click)="logout()">Salir</button>
     </div>
+    <div class="nav-container">
+        <nav class="nav">
+            <ul id="items">
+                <li><a routerLink="/main" routerLinkActive="active">Bonos</a></li>
+                <li><a routerLink="/estadisticas" routerLinkActive="active">Estadísticas</a></li>
+                <li><a routerLink="/listados" routerLinkActive="active">Listados</a></li>
+                <li><a routerLink="/bajar" routerLinkActive="active">Bajar</a></li>
+            </ul>
+        </nav>
+    </div>
 </header>

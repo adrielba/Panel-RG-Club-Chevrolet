@@ -13,8 +13,9 @@ app-header, app-footer {
     flex-shrink: 0;
 }
 
-app-main {
+router-outlet {
     flex-grow: 1;
     margin-top: 70px;
-    margin-bottom: 250px;
+    margin-bottom: 50px;
+    display: block;
 }

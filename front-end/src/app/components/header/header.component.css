@@ -1,21 +1,28 @@
-.header{
+.header {
     width: 100%;
-    height: 100px;
+    height: auto;
     background-color: rgba(99, 99, 99, 0);
     font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px 20px; 
+    box-sizing: border-box;
 }
-img{
-    margin: 5px;
-    margin-left: 30px;
+
+img {
+    margin: 5px 0;
     width: 74px;
 }
 
-.login-button{
+.login-button {
     position: absolute;
     top: 30px;
     right: 20px;
 }
-.btn-ingresar{
+
+.btn-ingresar {
     color: white;
     background-color: black;
     border: none;
@@ -25,20 +32,23 @@ img{
     padding: 10px 15px;
 }
 
-.btn-ingresar:hover{
+.btn-ingresar:hover {
     box-shadow: 0 0 10px #ffff;
 }
-.login-block{
+
+.login-block {
     position: absolute;
     top: 15px;
     right: 20px;
 }
-.welcome-block{
+
+.welcome-block {
     position: absolute;
     top: 0px;
     right: 50px;
 }
-.welcome-block button{
+
+.welcome-block button {
     color: white;
     background-color: black;
     border: none;
@@ -47,6 +57,96 @@ img{
     font-size: 16px;
     padding: 10px 15px;
 }
-.welcome-block button:hover{
+
+.welcome-block button:hover {
     box-shadow: 0 0 10px #ffff;
+}
+
+.nav-container {
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 20px;
+    border-radius: 3px;
+    max-width: 800px;
+    margin: 30px auto 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#items {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+#items li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px 10px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+#items li a:hover {
+    color: #000;
+    background-color: #fff;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+    img {
+        width: 50px;
+        margin-bottom: 10px;
+    }
+
+    .login-button,
+    .login-block,
+    .welcome-block {
+        position: static;
+        margin: 5px 0;
+    }
+
+    .btn-ingresar,
+    .welcome-block button {
+        font-size: 14px;
+        padding: 8px 10px;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        padding: 15px;
+        width: 90%;
+        margin-top: 20px;
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    #items {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    #items li a {
+        font-size: 14px;
+        padding: 8px;
+        width: 100%;
+        text-align: center;
+    }
+
+    #items li a:hover {
+        background-color: #000;
+        color: #fff;
+    }
 }

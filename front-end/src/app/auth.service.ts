@@ -11,7 +11,7 @@ export class AuthService {
   constructor(private http:HttpClient) { }
 
   login(usuario: string, contraseña: string): Observable<any>{
-    const url = `http://localhost/chivoback/index.php?action=login`;
+    const url = `https://rg-chivoclub.online/back-end/index.php?action=login`;
     return this.http.post(url, { usuario, contraseña }, ).pipe(
       tap((response: any) => {
         if(response.token){

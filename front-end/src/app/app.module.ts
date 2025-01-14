@@ -11,6 +11,9 @@ import { FooterComponent } from './components/footer/footer.component';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient } from '@angular/common/http';
+import { StatisticsComponent } from './components/statistics/statistics.component';
+import { ListComponent } from './components/list/list.component';
+import { DownloadComponent } from './components/download/download.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import { provideHttpClient } from '@angular/common/http';
     MainComponent,
     LoginComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    StatisticsComponent,
+    ListComponent,
+    DownloadComponent
   ],
   imports: [
     BrowserModule,

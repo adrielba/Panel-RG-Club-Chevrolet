@@ -29,7 +29,7 @@ verGanador() {
     this.error = null;
 
     this.http
-      .post('http://localhost/chivoback/index.php?action=verGanador', { numero: this.numero })
+      .post('https://rg-chivoclub.online/back-end/index.php?action=verGanador', { numero: this.numero })
       .subscribe(
         (response: any) => {
           this.ganador = response;
@@ -52,7 +52,7 @@ verificarNumero(){
 
   this.error1 = null;
 
-  this.http.post('http://localhost/chivoback/index.php?action=verificarNumero', { number: this.number }).subscribe(
+  this.http.post('https://rg-chivoclub.online/back-end/index.php?action=verificarNumero', { number: this.number }).subscribe(
     (response: any) => {
       this.bono = response;
       this.mostrarOverlay = true;
@@ -83,7 +83,7 @@ cargarBono() {
       vende: this.bono.vende || null
   };
 
-  this.http.post('http://localhost/chivoback/index.php?action=cargarBono', bonoData, {
+  this.http.post('https://rg-chivoclub.online/back-end/index.php?action=cargarBono', bonoData, {
       headers: { 'Content-Type': 'application/json' }
   }).subscribe(
       response => {
