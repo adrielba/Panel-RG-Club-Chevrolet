@@ -30,7 +30,7 @@ if($conn->connect_error){
 	die(json_encode(["error" => "Conexión a la Base de Datos Fallida: ", $conn->connect_error]));
 	exit();
 }
-
+$conn->set_charset("utf8");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_GET['action'] ?? '';
