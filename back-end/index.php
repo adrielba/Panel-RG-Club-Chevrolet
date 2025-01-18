@@ -46,6 +46,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         echo json_encode(["error" => "Acción inválida"]);
     }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $action = $_GET['action'] ?? '';
+
+    if ($action === 'estadisticas') {
+        handleEstadisticas($conn);
+    } else {
+        echo json_encode(["error" => "Acción inválida"]);
+    }
+} else {
+    echo json_encode(["error" => "Método no permitido"]);
 }
 
 function handleLogin($conn) {
@@ -246,6 +256,39 @@ function handleCargarBono($conn) {
     }
 
     $stmt->close();
+}
+
+function handleEstadisticas($conn) {
+    $query = "SELECT * FROM numeros";
+    $result = $conn->query($query);
+
+    $response = [
+        "totalCargados" => 0,
+        "cargados" => 0,
+        "juegan" => 0,
+        "quedan" => 0,
+    ];
+
+    if ($result && $result->num_rows > 0) {
+        while ($fila = $result->fetch_assoc()) {
+            if ($fila["cargada"] == 1) {
+                $response["totalCargados"]++;
+            }
+            if ($fila["cargada"] == 5) {
+                $response["cargados"]++;
+            }
+            if ($fila["cargada"] == 7) {
+                $response["juegan"]++;
+            }
+            if ($fila["vende"] == 1) {
+                $response["quedan"]++;
+            }
+        }
+    }
+
+    $response["bonosEntregados"] = 2500 - $response["quedan"];
+    echo json_encode($response);
+    exit();
 }
 
 ?>

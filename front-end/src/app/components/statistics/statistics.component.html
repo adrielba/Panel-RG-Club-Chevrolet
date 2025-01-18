@@ -1,1 +1,17 @@
-<p>statistics works!</p>
+<div *ngIf="statistics" class="statistics-container">
+    <h2 class="table-title">Estadística Bono Contribución</h2>
+    <table class="statistics-table">
+      <tr>
+        <th>Bonos Entregados</th>
+        <th>Cargados al Sistema</th>
+        <th>Participan del Sorteo</th>
+        <th>Club Chivo - RG</th>
+      </tr>
+      <tr>
+        <td>{{ statistics.bonosEntregados }}</td>
+        <td>{{ statistics.cargados }}</td>
+        <td>{{ statistics.juegan }}</td>
+        <td>{{ statistics.quedan }}</td>
+      </tr>
+    </table>
+  </div>
