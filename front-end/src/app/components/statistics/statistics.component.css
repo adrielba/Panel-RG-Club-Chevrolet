@@ -39,4 +39,55 @@
   .statistics-table tr:hover {
     background-color: #ddd;
   }
+
+  @media only screen and (max-width: 768px) {
+    .statistics-container {
+      padding: 5px;
+    }
+  
+    .table-title {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+  
+    .statistics-table {
+      font-size: 0.9rem;
+      border: none;
+    }
+  
+    .statistics-table th, .statistics-table td {
+      padding: 6px;
+      text-align: left; 
+    }
+  
+    .statistics-table th {
+      display: none; 
+    }
+  
+    .statistics-table tr {
+      display: block;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+    }
+  
+    .statistics-table td {
+      display: block;
+      text-align: right;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      position: relative;
+    }
+  
+    .statistics-table td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+  
+    .statistics-table td:last-child {
+      border-bottom: 0;
+    }
+  }
   

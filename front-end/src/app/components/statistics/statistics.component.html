@@ -1,17 +1,17 @@
 <div *ngIf="statistics" class="statistics-container">
-    <h2 class="table-title">Estadística Bono Contribución</h2>
-    <table class="statistics-table">
-      <tr>
-        <th>Bonos Entregados</th>
-        <th>Cargados al Sistema</th>
-        <th>Participan del Sorteo</th>
-        <th>Club Chivo - RG</th>
-      </tr>
-      <tr>
-        <td>{{ statistics.bonosEntregados }}</td>
-        <td>{{ statistics.cargados }}</td>
-        <td>{{ statistics.juegan }}</td>
-        <td>{{ statistics.quedan }}</td>
-      </tr>
-    </table>
-  </div>
+  <h2 class="table-title">Estadística Bono Contribución</h2>
+  <table class="statistics-table">
+    <tr>
+      <th>Bonos Entregados</th>
+      <th>Cargados al Sistema</th>
+      <th>Participan del Sorteo</th>
+      <th>Club Chivo - RG</th>
+    </tr>
+    <tr>
+      <td data-label="Bonos Entregados">{{ statistics.bonosEntregados }}</td>
+      <td data-label="Cargados al Sistema">{{ statistics.cargados }}</td>
+      <td data-label="Participan del Sorteo">{{ statistics.juegan }}</td>
+      <td data-label="Club Chivo - RG">{{ statistics.quedan }}</td>
+    </tr>
+  </table>
+</div>
