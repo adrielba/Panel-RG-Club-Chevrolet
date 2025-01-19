@@ -1,6 +1,6 @@
 <div class="main-container">
     <div class="cargar-bono-container">
-        <h1>Cargar Bono</h1>
+        <h1>Carga de Bonos</h1>
 
         <label for="numero">Número:</label>
         <input type="number" id="numero"  [(ngModel)]="number" min="0" max="2499"/>
@@ -31,30 +31,31 @@
         <p *ngIf="error1" class="error-message">{{ error1 }}</p>
     </div>
 
-    <div class="ver-ganador-container">
-        <h1>Ver Ganador</h1>
+    <div class="cargar-cancelado-container">
+        <h1>Carga Bono Cancelado</h1>
 
-        <label for="numero">Número:</label>
-        <input type="number" id="numero" [(ngModel)]="numero"/>
-        <button type="button" (click)="verGanador()">Ver</button>
+        <label for="numcancel">Nº de bono Pagado en su totalidad:</label>
+        <input type="number" id="numcancel" [(ngModel)]="numeroCancelado"/>
+        <button type="button" (click)="cargarBonoCancelado()">Carga Para Jugar</button>
 
-        <div *ngIf="ganador" class="overlay">
-            <h2>¡Ganador Encontrado!</h2>
-            <p><strong>Números:</strong> {{ ganador.numeros }}</p>
-            <p><strong>Nombre:</strong> {{ ganador.nombre }}</p>
-            <p><strong>Domicilio:</strong> {{ ganador.domicilio }}</p>
-            <p><strong>DNI:</strong> {{ ganador.dni }}</p>
-            <p><strong>Teléfono:</strong> {{ ganador.fono }}</p>
-            <p><strong>Vendedor:</strong> {{ ganador.apellido }}</p>
-            <button (click)="cerrarOverlay()">Cerrar</button>
-        </div>
-    
-        <p *ngIf="error" class="error-message">{{ error }}</p>
+        <p *ngIf="mensaje" class="mensaje">{{ mensaje }}</p>
     </div>
-</div>
-<div class="overlay-cargar">
+
+    <div class="habilita-bono-container">
+        <h1>Habilita el bono para cargar datos</h1>
+
+        <label for="numhab">Nº habilta para volver a cargar:</label>
+        <input type="number" [(ngModel)]="numeroHabilitar"/>
+        <button type="button" (click)="habilitarBono()">Habilitar para Modificar</button>
+    </div>
+
+    <div class="noparticipa-container">
+        <h1>Bono NO PARTICIPA</h1>
+
+        <label for="numno">Nº de bono NO PARTICIPÁ DEL SORTEO:</label>
+        <input type="number" [(ngModel)]="numeroNoParticipa"/>
+        <button type="button" (click)="marcarNoParticipa()">Cargar para NO JUGAR</button>
+    </div>
 
 </div>
-<div class="overlay-ganador">
 
-</div>

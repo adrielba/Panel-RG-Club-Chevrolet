@@ -17,6 +17,13 @@ export class MainComponent {
   bono: any = null;
   mostrarOverlay: boolean = false;
 
+  numeroCancelado: number | null = null;
+  mensaje: string | null = null;
+
+  numeroHabilitar: number = 0;
+
+  numeroNoParticipa: number = 0;
+
 
 constructor(private http: HttpClient) {}
 
@@ -105,5 +112,65 @@ exitOverlay(){
   cerrarOverlay() {
     this.ganador = null;
   }
+
+  cargarBonoCancelado(): void {
+    if (this.numeroCancelado === null || this.numeroCancelado <= 0) {
+      this.mensaje = "Por favor, ingrese un número válido.";
+      return;
+    }
+
+    const payload = { numero: this.numeroCancelado };
+
+    this.http.post('https://rg-chivoclub.online/back-end/index.php?action=bonoCancelado', payload)
+      .subscribe({
+        next: (response: any) => {
+          this.mensaje = response.message;
+        },
+        error: (error) => {
+          this.mensaje = error.error?.error || "Error al procesar la solicitud.";
+        }
+      });
+  }
+
+  habilitarBono() {
+    if (this.numeroHabilitar <= 0) {
+      alert('Por favor, ingrese un número válido.');
+      return;
+    }
+
+    const payload = { numero: this.numeroHabilitar };
+    this.http
+      .post('https://rg-chivoclub.online/back-end/index.php?action=habilitarBono', payload)
+      .subscribe(
+        (response: any) => {
+          alert(response.message || 'Bono habilitado correctamente.');
+        },
+        (error) => {
+          alert(error.error?.error || 'Hubo un error al habilitar el bono.');
+        }
+      );
+  }
+
+  marcarNoParticipa() {
+    if (this.numeroNoParticipa <= 0) {
+      alert('Por favor, ingrese un número válido.');
+      return;
+    }
+
+    const payload = { numero: this.numeroNoParticipa };
+    this.http
+      .post('https://rg-chivoclub.online/back-end/index.php?action=bonoNoParticipa', payload)
+      .subscribe(
+        (response: any) => {
+          alert(response.message || 'Bono marcado como NO PARTICIPA.');
+        },
+        (error) => {
+          alert(error.error?.error || 'Hubo un error al marcar el bono.');
+        }
+      );
+  }
+
+
 }
+
 

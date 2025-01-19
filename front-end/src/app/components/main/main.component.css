@@ -1,9 +1,9 @@
 .main-container{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    gap: 300px;
+    gap: 115px;
     margin: 20px;
     text-align: center;
 }
@@ -21,7 +21,7 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.ver-ganador-container{
+.cargar-cancelado-container{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -32,6 +32,32 @@
     width: 90%;
     max-width: 400px;
     font-family: Arial, Helvetica, sans-serif;
+}
+.habilita-bono-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+.noparticipa-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    font-family: Arial, Helvetica, sans-serif;
+
 }
 .main-container h1{
     color: black;
@@ -110,6 +136,7 @@ input[type="number"] {
     max-width: 375px;
 }
 
+
 @media only screen and (max-width: 768px) {
     .main-container {
         flex-direction: column;
@@ -155,5 +182,6 @@ input[type="number"] {
         padding: 10px;
     }
 }
+
 
 

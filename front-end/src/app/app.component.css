@@ -15,7 +15,7 @@ app-header, app-footer {
 
 router-outlet {
     flex-grow: 1;
-    margin-top: 70px;
+    margin-top: 20px;
     margin-bottom: 50px;
     display: block;
 }

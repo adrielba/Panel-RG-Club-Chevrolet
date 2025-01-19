@@ -43,6 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         handleVerificarNumero($conn);
     } elseif ($action === 'cargarBono') {
         handleCargarBono($conn);
+    } elseif ($action === 'bonoCancelado') {
+        handleBonoCancelado($conn);
+    } elseif ($action === 'habilitarBono') {
+        handleHabilitarBono($conn);
+    } elseif ($action === 'bonoNoParticipa') {
+        handleBonoNoParticipa($conn);
     } else {
         echo json_encode(["error" => "Acción inválida"]);
     }
@@ -290,5 +296,141 @@ function handleEstadisticas($conn) {
     echo json_encode($response);
     exit();
 }
+
+function handleBonoCancelado($conn) {
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if (!isset($data['numero'])) {
+        http_response_code(400);
+        echo json_encode(["error" => "Número no proporcionado"]);
+        return;
+    }
+
+    $numero = $data['numero'];
+
+    $sql = "UPDATE numeros SET cargada = '7' WHERE n1 = ?";
+    $stmt = $conn->prepare($sql);
+
+    if (!$stmt) {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al preparar la consulta"]);
+        return;
+    }
+
+    $stmt->bind_param("i", $numero);
+
+    if ($stmt->execute()) {
+        if ($stmt->affected_rows > 0) {
+            echo json_encode(["message" => "Bono actualizado para participar del sorteo"]);
+        } else {
+            http_response_code(404);
+            echo json_encode(["error" => "Número no encontrado o ya está en estado cargada = 7"]);
+        }
+    } else {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al actualizar el bono"]);
+    }
+
+    $stmt->close();
+}
+
+function handleHabilitarBono($conn) {
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if (!isset($data['numero'])) {
+        http_response_code(400);
+        echo json_encode(["error" => "Número no proporcionado"]);
+        return;
+    }
+
+    $numero = $data['numero'];
+
+    $stmtOrden = $conn->prepare("SELECT orden FROM orden WHERE valor = ?");
+    if (!$stmtOrden) {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al preparar la consulta en la tabla 'orden'"]);
+        return;
+    }
+    $stmtOrden->bind_param("i", $numero);
+    $stmtOrden->execute();
+    $resultOrden = $stmtOrden->get_result();
+
+    if ($resultOrden->num_rows === 0) {
+        http_response_code(404);
+        echo json_encode(["error" => "Número no encontrado en la tabla 'orden'"]);
+        return;
+    }
+
+    $rowOrden = $resultOrden->fetch_assoc();
+    $ver = $rowOrden['orden'];
+
+    $stmtNumeros = $conn->prepare("UPDATE numeros SET cargada = '1' WHERE n1 = ?");
+    if (!$stmtNumeros) {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al preparar la consulta en la tabla 'numeros'"]);
+        return;
+    }
+    $stmtNumeros->bind_param("i", $ver);
+
+    if ($stmtNumeros->execute()) {
+        echo json_encode(["message" => "Bono habilitado para modificar"]);
+    } else {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al habilitar el bono"]);
+    }
+
+    $stmtOrden->close();
+    $stmtNumeros->close();
+}
+
+function handleBonoNoParticipa($conn) {
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if (!isset($data['numero'])) {
+        http_response_code(400);
+        echo json_encode(["error" => "Número no proporcionado"]);
+        return;
+    }
+
+    $numero = $data['numero'];
+
+    $stmtOrden = $conn->prepare("SELECT orden FROM orden WHERE valor = ?");
+    if (!$stmtOrden) {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al preparar la consulta en la tabla 'orden'"]);
+        return;
+    }
+    $stmtOrden->bind_param("i", $numero);
+    $stmtOrden->execute();
+    $resultOrden = $stmtOrden->get_result();
+
+    if ($resultOrden->num_rows === 0) {
+        http_response_code(404);
+        echo json_encode(["error" => "Número no encontrado en la tabla 'orden'"]);
+        return;
+    }
+
+    $rowOrden = $resultOrden->fetch_assoc();
+    $ver = $rowOrden['orden'];
+
+    $stmtNumeros = $conn->prepare("UPDATE numeros SET cargada = '5' WHERE n1 = ?");
+    if (!$stmtNumeros) {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al preparar la consulta en la tabla 'numeros'"]);
+        return;
+    }
+    $stmtNumeros->bind_param("i", $ver);
+
+    if ($stmtNumeros->execute()) {
+        echo json_encode(["message" => "El bono ha sido marcado como NO PARTICIPA."]);
+    } else {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al actualizar el bono."]);
+    }
+
+    $stmtOrden->close();
+    $stmtNumeros->close();
+}
+
 
 ?>
