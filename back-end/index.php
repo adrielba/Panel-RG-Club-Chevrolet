@@ -57,6 +57,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'estadisticas') {
         handleEstadisticas($conn);
+    } elseif ($action === 'listaCargados') {
+        handleListaCargados($conn);
+    } elseif ($action === 'listaAptos'){
+        handleListaAptos($conn);
+    } elseif ($action === 'listaNoEntregados'){
+        handleListaNoEntregados($conn);
+    } elseif ($action === 'listaVendedores'){
+        handleVendedores($conn);
+    } elseif ($action === 'generarArchivo'){
+        generarArchivoDatosCargados($conn);
+    } elseif ($action === 'descargarArchivo'){
+        descargarArchivo();
+    } elseif ($action === 'bajarCargada7'){
+        handleGenerarArchivoCargada7($conn);
     } else {
         echo json_encode(["error" => "Acción inválida"]);
     }
@@ -432,5 +446,167 @@ function handleBonoNoParticipa($conn) {
     $stmtNumeros->close();
 }
 
+function handleListaCargados($conn) {
+    $query = "SELECT n1, n2, n3, n4, nombre, fono FROM numeros WHERE cargada = 5";
+    $result = $conn->query($query);
+
+    if (!$result) {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al obtener la lista de bonos cargados"]);
+        exit();
+    }
+
+    $bonos = [];
+    while ($row = $result->fetch_assoc()) {
+        $bonos[] = $row;
+    }
+
+    echo json_encode($bonos);
+    exit();
+}
+
+function handleListaAptos($conn) {
+    $query = "SELECT n1, n2, n3, n4, nombre, fono FROM numeros WHERE cargada = 7";
+    $result = $conn->query($query);
+
+    if (!$result) {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al obtener la lista de bonos aptos para jugar"]);
+        exit();
+    }
+
+    $bonos = [];
+    while ($row = $result->fetch_assoc()) {
+        $bonos[] = $row;
+    }
+
+    echo json_encode($bonos);
+    exit();
+}
+
+function handleListaNoEntregados($conn) {
+    $query = "SELECT n1, n2, n3, n4, nombre, fono FROM numeros WHERE cargada = 1";
+    $result = $conn->query($query);
+
+    if (!$result) {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al obtener la lista de bonos NO Entregados"]);
+        exit();
+    }
+
+    $bonos = [];
+    while ($row = $result->fetch_assoc()) {
+        $bonos[] = $row;
+    }
+
+    echo json_encode($bonos);
+    exit();
+}
+
+function handleVendedores($conn) {
+    $query = "SELECT apellido, vende FROM vende";
+    $result = $conn->query($query);
+
+    if (!$result) {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al obtener la lista de vendedores"]);
+        exit();
+    }
+
+    $vendedores = [];
+    while ($row = $result->fetch_assoc()) {
+        $vendedores[] = $row;
+    }
+
+    echo json_encode($vendedores);
+    exit();
+}
+
+function generarArchivoDatosCargados($conn) {
+    $query = "SELECT n1, n2, n3, n4, nombre, fono FROM numeros WHERE cargada = 5";
+    $result = $conn->query($query);
+
+    if (!$result) {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al generar el archivo de datos cargados"]);
+        exit();
+    }
+
+    $file = 'datos.txt';
+    $jump = "\r\n";
+    $separator = "\t";
+
+    $fp = fopen($file, 'w');
+
+    $header = 'N°1' . $separator . 'N°2' . $separator . 'N°3' . $separator . 'N°4' . $separator . 'Apellido' . $separator . 'Celular' . $jump;
+    fwrite($fp, $header);
+
+    while ($row = $result->fetch_assoc()) {
+        $line = $row['n1'] . $separator . $row['n2'] . $separator . $row['n3'] . $separator . $row['n4'] . $separator . $row['nombre'] . $separator . $row['fono'] . $jump;
+        fwrite($fp, $line);
+    }
+
+    fclose($fp);
+    chmod($file, 0777);
+
+    echo json_encode(["message" => "Archivo generado exitosamente", "file" => $file]);
+    exit();
+}
+
+function descargarArchivo() {
+    $file = 'datos.txt';
+
+    if (!file_exists($file)) {
+        http_response_code(404);
+        echo json_encode(["error" => "El archivo no existe"]);
+        exit();
+    }
+
+    header('Content-Description: File Transfer');
+    header('Content-Type: text/plain');
+    header('Content-Disposition: attachment; filename=' . basename($file));
+    header('Content-Transfer-Encoding: binary');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize($file));
+    ob_clean();
+    flush();
+    readfile($file);
+    exit();
+}
+
+function handleGenerarArchivoCargada7($conn) {
+    $query = "SELECT * FROM numeros WHERE cargada = 7";
+    $result = $conn->query($query);
+
+    if (!$result) {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al obtener los datos cargados"]);
+        exit();
+    }
+
+    $fecha = date('d-m-Y');
+    $fileName = $fecha . '.txt';
+
+    $jump = "\r\n";
+    $separator = "\t";
+
+    $fileContent = 'N°1' . $separator . 'N°2' . $separator . 'N°3' . $separator . 'N°4' . $separator . 'Apellido' . $separator . 'Celular' . $separator . 'Cargada' . $jump;
+
+    while ($row = $result->fetch_assoc()) {
+        $fileContent .= $row['n1'] . $separator . $row['n2'] . $separator . $row['n3'] . $separator . $row['n4'] . $separator . $row['nombre'] . $separator . $row['fono'] . $separator . $row['cargada'] . $jump;
+    }
+
+    header('Content-Description: File Transfer');
+    header('Content-Type: text/plain');
+    header('Content-Disposition: attachment; filename="' . $fileName . '"');
+    header('Content-Length: ' . strlen($fileContent));
+    header('Cache-Control: no-cache, must-revalidate');
+    header('Expires: 0');
+
+    echo $fileContent;
+    exit();
+}
 
 ?>

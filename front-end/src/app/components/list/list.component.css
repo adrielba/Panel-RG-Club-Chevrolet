@@ -1,0 +1,36 @@
+.list-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 115px;
+    margin: 20px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.cargados-list,
+.jugar-list,
+.vendedores-list {
+  max-width: 100%;
+  background-color: white;
+}
+
+.bonos-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.bonos-table th,
+.bonos-table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+.bonos-table-container {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
