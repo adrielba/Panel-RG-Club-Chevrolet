@@ -1,0 +1,24 @@
+<div class="back-container">
+  <a routerLink="/menu"><--Regresar al Menú</a>
+</div>
+<div class="list-container">
+    <div class="vendedores-list">
+        <h2>Listado de Vendedores</h2> 
+        <div class="bonos-table-container">
+          <table class="bonos-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Número</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let vendedor of vendedores">
+                <td>{{ vendedor.apellido }}</td>
+                <td>{{ vendedor.vende }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+</div>

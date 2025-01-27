@@ -1,0 +1,32 @@
+<div class="back-container">
+  <a routerLink="/menu"><--Regresar al Menú</a>
+</div>
+<div class="list-container">
+    <div class="jugar-list">
+        <h2>Listado de Bonos Aptos para Jugar</h2>
+        <div class="bonos-table-container">
+            <table border="1" class="bonos-table">
+                <thead>
+                  <tr>
+                    <th>N°1</th>
+                    <th>N°2</th>
+                    <th>N°3</th>
+                    <th>N°4</th>
+                    <th>Apellido y Nombre</th>
+                    <th>Teléfono</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let bono of bonosAptos">
+                    <td>{{ bono.n1 }}</td>
+                    <td>{{ bono.n2 }}</td>
+                    <td>{{ bono.n3 }}</td>
+                    <td>{{ bono.n4 }}</td>
+                    <td>{{ bono.nombre }}</td>
+                    <td>{{ bono.fono }}</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+      </div>
+</div>

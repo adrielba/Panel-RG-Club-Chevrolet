@@ -1,0 +1,12 @@
+<div class="back-container">
+    <a routerLink="/menu"><--Regresar al Menú</a>
+</div>
+<div class="container">
+    <div class="habilita-bono-container">
+        <h1>Habilita el bono para cargar datos</h1>
+
+        <label for="numhab">Nº habilta para volver a cargar:</label>
+        <input type="number" [(ngModel)]="numeroHabilitar"/>
+        <button type="button" (click)="habilitarBono()">Habilitar para Modificar</button>
+    </div>
+</div>

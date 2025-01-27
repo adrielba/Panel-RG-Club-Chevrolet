@@ -1,0 +1,19 @@
+<div class="container">
+    <h2 class="table-title">Menú de Navegación</h2>
+    <table class="nav-table">
+      <thead>
+        <tr>
+          <th *ngFor="let item of menuItems">{{ item.title }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let i of [0, 1, 2, 3]">
+          <td *ngFor="let item of menuItems">
+            <ng-container *ngIf="item.links[i]">
+              <a [routerLink]="item.links[i].route">{{ item.links[i].label }}</a>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

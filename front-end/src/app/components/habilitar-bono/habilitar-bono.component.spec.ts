@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DownloadComponent } from './download.component';
+import { HabilitarBonoComponent } from './habilitar-bono.component';
 
-describe('DownloadComponent', () => {
-  let component: DownloadComponent;
-  let fixture: ComponentFixture<DownloadComponent>;
+describe('HabilitarBonoComponent', () => {
+  let component: HabilitarBonoComponent;
+  let fixture: ComponentFixture<HabilitarBonoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DownloadComponent]
+      declarations: [HabilitarBonoComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DownloadComponent);
+    fixture = TestBed.createComponent(HabilitarBonoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

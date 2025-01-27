@@ -1,34 +1,18 @@
 import { Component } from '@angular/core';
-import { DownloadService } from '../../download.service';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-download',
+  selector: 'app-descargar-bonos-jugar',
   standalone: false,
   
-  templateUrl: './download.component.html',
-  styleUrl: './download.component.css'
+  templateUrl: './descargar-bonos-jugar.component.html',
+  styleUrl: './descargar-bonos-jugar.component.css'
 })
-export class DownloadComponent {
-
+export class DescargarBonosJugarComponent {
   private apiUrl = 'https://rg-chivoclub.online/back-end/index.php?action=bajarCargada7';
+  
+  constructor(private http: HttpClient) {}
 
-  constructor(private downloadService: DownloadService, private http: HttpClient) {}
-
-  generarArchivo(): void {
-    this.downloadService.generarArchivo().subscribe({
-      next: (response) => {
-        console.log(response.message);
-      },
-      error: (err) => {
-        console.error('Error al generar el archivo:', err);
-      },
-    });
-  }
-
-  descargarArchivo(): void {
-    this.downloadService.descargarArchivo();
-  }
 
   descargarCargada7(): void {
     this.http.get(this.apiUrl, { responseType: 'blob' }).subscribe(blob => {

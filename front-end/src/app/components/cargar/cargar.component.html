@@ -1,4 +1,4 @@
-<div class="main-container">
+<div class="container">
     <div class="cargar-bono-container">
         <h1>Carga de Bonos</h1>
 
@@ -30,32 +30,5 @@
         </div>
         <p *ngIf="error1" class="error-message">{{ error1 }}</p>
     </div>
-
-    <div class="cargar-cancelado-container">
-        <h1>Carga Bono Cancelado</h1>
-
-        <label for="numcancel">Nº de bono Pagado en su totalidad:</label>
-        <input type="number" id="numcancel" [(ngModel)]="numeroCancelado"/>
-        <button type="button" (click)="cargarBonoCancelado()">Carga Para Jugar</button>
-
-        <p *ngIf="mensaje" class="mensaje">{{ mensaje }}</p>
-    </div>
-
-    <div class="habilita-bono-container">
-        <h1>Habilita el bono para cargar datos</h1>
-
-        <label for="numhab">Nº habilta para volver a cargar:</label>
-        <input type="number" [(ngModel)]="numeroHabilitar"/>
-        <button type="button" (click)="habilitarBono()">Habilitar para Modificar</button>
-    </div>
-
-    <div class="noparticipa-container">
-        <h1>Bono NO PARTICIPA</h1>
-
-        <label for="numno">Nº de bono NO PARTICIPÁ DEL SORTEO:</label>
-        <input type="number" [(ngModel)]="numeroNoParticipa"/>
-        <button type="button" (click)="marcarNoParticipa()">Cargar para NO JUGAR</button>
-    </div>
-
 </div>
 
