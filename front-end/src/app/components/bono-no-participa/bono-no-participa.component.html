@@ -1,12 +1,14 @@
 <div class="back-container">
-    <a routerLink="/menu"><--Regresar al Menú</a>
+  <a routerLink="/menu"><--Regresar al Menú</a>
 </div>
 <div class="container">
-    <div class="noparticipa-container">
-        <h1>Bono NO PARTICIPA</h1>
+  <div class="noparticipa-container">
+    <h1>Bono NO PARTICIPA</h1>
 
-        <label for="numno">Nº de bono NO PARTICIPÁ DEL SORTEO:</label>
-        <input type="number" [(ngModel)]="numeroNoParticipa"/>
-        <button type="button" (click)="marcarNoParticipa()">Cargar para NO JUGAR</button>
-    </div>
+    <label for="numno">Nº de bono NO PARTICIPÁ DEL SORTEO:</label>
+    <input type="number" [(ngModel)]="numeroNoParticipa" />
+    <button type="button" (click)="marcarNoParticipa()">
+      Cargar para NO JUGAR
+    </button>
+  </div>
 </div>
